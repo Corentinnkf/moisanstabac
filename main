@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arrêtez de Fumer - Votre Nouveau Départ</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #ff7e5f, #feb47b);
+      color: #fff;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      margin-top: 50px;
+      font-size: 3rem;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    .counter {
+      margin-top: 30px;
+      font-size: 2rem;
+    }
+    .stat {
+      margin: 20px auto;
+      padding: 20px;
+      width: 80%;
+      max-width: 500px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+    .stat h2 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+    .stat p {
+      font-size: 1.2rem;
+      margin: 5px 0;
+    }
+    .form-container {
+      margin: 20px auto;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.2);
+      width: 80%;
+      max-width: 500px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+    label {
+      font-size: 1rem;
+      margin-right: 10px;
+    }
+    input {
+      padding: 8px;
+      font-size: 1rem;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #ff7e5f;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #feb47b;
+    }
+  </style>
+</head>
+<body>
+  <h1>Bravo, vous arrêtez de fumer &#127881;</h1>
+
+  <!-- Formulaire pour personnaliser les paramètres -->
+  <div class="form-container">
+    <h2>Réglez vos paramètres</h2>
+    <form id="settingsForm">
+      <label for="startDate">Date de départ :</label>
+      <input type="datetime-local" id="startDate" name="startDate" value="2024-12-05T00:01">
+      <br>
+
+      <label for="cigarettePrice">Prix du paquet (€) :</label>
+      <input type="number" id="cigarettePrice" name="cigarettePrice" value="12" step="0.1">
+      <br>
+
+      <label for="daysPerPack">Fréquence d'achat (jours) :</label>
+      <input type="number" id="daysPerPack" name="daysPerPack" value="2.5" step="0.1">
+      <br>
+
+      <button type="button" onclick="updateSettings()">Mettre à jour</button>
+    </form>
+  </div>
+
+  <div class="counter">
+    <div class="stat">
+      <h2>Temps écoulé :</h2>
+      <p id="timeElapsed">0 jours, 0 heures, 0 minutes, 0 secondes</p>
+    </div>
+    <div class="stat">
+      <h2>Économies réalisées :</h2>
+      <p id="moneySaved">0 €</p>
+    </div>
+  </div>
+
+  <script>
+    let startDate = new Date('2024-12-05T00:01:00'); // Date de départ par défaut
+    let cigarettePrice = 12; // Prix du paquet par défaut
+    let daysPerPack = 2.5; // Fréquence d'achat par défaut
+
+    function updateCounter() {
+      const now = new Date();
+      const timeDiff = now - startDate;
+
+      // Calcul du temps écoulé
+      const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((timeDiff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((timeDiff / (1000 * 60)) % 60);
+      const seconds = Math.floor((timeDiff / 1000) % 60);
+
+      // Calcul des économies
+      const moneySaved = Math.floor((days / daysPerPack)) * cigarettePrice;
+
+      // Mise à jour du DOM
+      document.getElementById('timeElapsed').textContent =
+        `${days} jours, ${hours} heures, ${minutes} minutes, ${seconds} secondes`;
+
+      document.getElementById('moneySaved').textContent = `${moneySaved} €`;
+    }
+
+    // Mettre à jour toutes les secondes
+    setInterval(updateCounter, 1000);
+
+    // Initialiser le compteur immédiatement
+    updateCounter();
+
+    function updateSettings() {
+      // Récupérer les nouvelles valeurs des champs
+      const newStartDate = document.getElementById('startDate').value;
+      const newCigarettePrice = parseFloat(document.getElementById('cigarettePrice').value);
+      const newDaysPerPack = parseFloat(document.getElementById('daysPerPack').value);
+
+      // Mettre à jour les variables avec les nouvelles valeurs
+      startDate = new Date(newStartDate);
+      cigarettePrice = newCigarettePrice;
+      daysPerPack = newDaysPerPack;
+
+      // Redémarrer le compteur avec les nouvelles valeurs
+      updateCounter();
+    }
+  </script>
+</body>
+</html>
